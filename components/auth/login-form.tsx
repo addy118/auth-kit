@@ -19,8 +19,11 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
+import { useRouter } from "next/navigation";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export const LoginForm = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -38,8 +41,14 @@ export const LoginForm = () => {
 
     startTransition(() => {
       login(values).then((data) => {
+        if (!data) return;
+
         setError(data.error);
         setSuccess(data.success);
+
+        if (data.success) {
+          router.push(DEFAULT_LOGIN_REDIRECT);
+        }
       });
     });
   };

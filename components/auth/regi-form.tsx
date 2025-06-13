@@ -19,8 +19,10 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "@/components/form-success";
 import { register } from "@/actions/register";
+import { useRouter } from "next/navigation";
 
 export const RegiForm = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -41,6 +43,10 @@ export const RegiForm = () => {
       register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
+
+        if (data.success) {
+          router.push("/login");
+        }
       });
     });
   };
