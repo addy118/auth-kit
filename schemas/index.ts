@@ -20,3 +20,15 @@ export const RegiSchema = z.object({
     message: "Minimum 8 characters are required",
   }),
 });
+
+export const ResetSchema = z.object({
+  email: z.string().email({
+    message: "Email is required",
+  }),
+});
+
+export const NewPassSchema = z.object({
+  password: z.string().min(8, {
+    message: "Minimum 8 characters are required",
+  }),
+});
