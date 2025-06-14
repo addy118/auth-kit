@@ -29,9 +29,9 @@ export const RegiForm = () => {
   const form = useForm<z.infer<typeof RegiSchema>>({
     resolver: zodResolver(RegiSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
+      name: "Aditya Kirti",
+      email: "addyyy118@gmail.com",
+      password: "Hello@18",
     },
   });
 
@@ -43,10 +43,6 @@ export const RegiForm = () => {
       register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
-
-        if (data.success) {
-          router.push("/login");
-        }
       });
     });
   };

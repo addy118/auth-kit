@@ -5,6 +5,8 @@ import { RegiSchema } from "@/schemas";
 import * as z from "zod";
 import { db } from "@/lib/db";
 import User from "@/data/user";
+import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const register = async (values: z.infer<typeof RegiSchema>) => {
   console.log(values);
@@ -16,9 +18,9 @@ export const register = async (values: z.infer<typeof RegiSchema>) => {
   const hashedPass = await bcrypt.hash(password, 10);
 
   const existingUser = await User.getByEmail(email);
-
   if (existingUser) return { error: "Email already in use!" };
-  console.log(name, email, hashedPass);
+
+  // console.log(name, email, hashedPass);
 
   await db.user.create({
     data: {
@@ -28,7 +30,11 @@ export const register = async (values: z.infer<typeof RegiSchema>) => {
     },
   });
 
-  // TODO: send verfication token email
+  const verificationToken = await generateVerificationToken(email);
+  console.log(verificationToken);
 
-  return { success: "User created!" };
+  // send verification email
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { success: "Confirmation email sent!" };
 };

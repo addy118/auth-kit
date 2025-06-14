@@ -26,17 +26,24 @@ export const {
   },
 
   callbacks: {
-    // // don't allow unverified email users to login
-    // async signIn({ user }) {
-    //   if (!user.id) return false;
-    //   const existingUser = await User.getById(user.id);
+    // don't allow unverified email users to login
+    async signIn({ user, account }) {
+      // only allow oauth without email verification
+      if (account?.provider !== "credentials") return true;
 
-    //   if (!existingUser || !existingUser.emailVerified) {
-    //     return false;
-    //   }
+      if (!user.id) return false;
 
-    //   return true;
-    // },
+      // prevent sign in w/o email verification
+      const existingUser = await User.getById(user.id);
+      if (!existingUser || !existingUser.emailVerified) {
+        return false;
+      }
+
+      // TODO: add 2fa check
+
+      // allow signIn
+      return true;
+    },
 
     async jwt({ token }) {
       if (!token.sub) return token;
