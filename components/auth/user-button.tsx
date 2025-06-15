@@ -24,17 +24,14 @@ export const UserButton = () => {
       <DropdownMenuTrigger>
         <Avatar>
           <AvatarImage src={user?.image || ""} />
-          <AvatarFallback className="bg-sky-500">
+          <AvatarFallback className="bg-black">
             <FaUser color="#fff" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-40" align="end">
-        <span
-          className="cursor-pointer"
-          onClick={() => router.push("/admin")}
-        >
+        <span className="cursor-pointer" onClick={() => router.push("/admin")}>
           <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
             <ShieldUser size={18} /> Admin
           </DropdownMenuItem>
@@ -49,19 +46,13 @@ export const UserButton = () => {
           </DropdownMenuItem>
         </span>
 
-        <span
-          className="cursor-pointer"
-          onClick={() => router.push("/server")}
-        >
+        <span className="cursor-pointer" onClick={() => router.push("/server")}>
           <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
             <Server size={18} /> Server
           </DropdownMenuItem>
         </span>
 
-        <span
-          className="cursor-pointer"
-          onClick={() => router.push("/client")}
-        >
+        <span className="cursor-pointer" onClick={() => router.push("/client")}>
           <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
             <Globe size={18} /> Client
           </DropdownMenuItem>

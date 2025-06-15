@@ -21,7 +21,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <SessionProvider session={session}>
-          <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-sky-500">
+          <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-black">
             <Navbar />
             {children}
           </div>
