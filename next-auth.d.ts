@@ -5,13 +5,13 @@ import { UserRole } from "@prisma/client";
 export type ExtendedUser = DefaultSession["user"] & {
   role: UserRole;
   isTwoFactorEnabled: boolean;
+  isOAuth: boolean;
 };
 
 // any custom field types that you want to add on session obj
 declare module "next-auth" {
   interface Session {
     user: ExtendedUser;
-    isTwoFactorEnabled: boolean;
   }
 }
 
@@ -20,5 +20,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     role?: UserRole;
     isTwoFactorEnabled: boolean;
+    isOAuth: boolean;
   }
 }

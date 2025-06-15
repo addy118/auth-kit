@@ -1,36 +1,48 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import { CardWrapper } from "./card-wrapper";
-import { useSearchParams } from "next/navigation";
-import { newVerification } from "@/actions/new-verification";
+import { BeatLoader } from "react-spinners";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormSuccess } from "../form-success";
 import { FormError } from "../form-error";
+import { emailChange } from "@/actions/email-change";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { useSession } from "next-auth/react";
 
-export const NewVerificationForm = () => {
+export const ChangeEmailForm = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+  const { update } = useSession();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const user = useCurrentUser();
 
   const onSubmit = useCallback(async () => {
     if (!token) {
       setError("Missing token.");
       return;
     }
+
     try {
-      const data = await newVerification(token);
+      if (!user) return null;
+      const data = await emailChange(token, user);
 
       if (data?.error) {
         setSuccess(undefined);
-        setError(data.error);
-      } else if (data?.success) {
+        setError(data?.error);
+      }
+
+      if (data?.success) {
+        await update();
         setError(undefined);
-        setSuccess(data.success);
+        setSuccess(data?.success);
+        router.push("/settings");
       }
     } catch {
       setError("Something went wrong.");
     }
-  }, [token]);
+  }, [token, user, update, router]);
 
   useEffect(() => {
     onSubmit();
@@ -43,11 +55,7 @@ export const NewVerificationForm = () => {
       backButtonLabel="Back to login"
     >
       <div className="flex items-center w-full justify-center">
-        {!success && !error && (
-          <div className="flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-          </div>
-        )}
+        {!success && !error && <BeatLoader />}
         <FormSuccess message={success} />
         <FormError message={error} />
       </div>

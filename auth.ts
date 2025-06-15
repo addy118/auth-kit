@@ -4,6 +4,7 @@ import { db } from "./lib/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import User from "./data/user";
 import TwoFactorConfirm from "./data/two-factor-conf";
+import Account from "./data/account";
 
 export const {
   // nested destructuring
@@ -42,13 +43,11 @@ export const {
 
       console.log("from auth.ts: 43");
 
-      // TODO: add 2fa check
+      // add 2fa check
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await TwoFactorConfirm.getByUserId(
           existingUser.id
         );
-
-        console.log(twoFactorConfirmation);
 
         if (!twoFactorConfirmation) return false;
 
@@ -66,12 +65,22 @@ export const {
       if (!token.sub) return token;
 
       const existingUser = await User.getById(token.sub);
+      // console.log("User from JWT callback: ", existingUser);
       if (!existingUser) return token;
 
+      const existingAcc = await Account.getByUserId(existingUser.id);
+      // if (!existingAcc) return token;
+
+      // editable fields to be set manually
+      token.name = existingUser.name;
+      token.email = existingUser.email;
+
       // token custom fields
+      token.isOAuth = !!existingAcc;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
+      // console.log("JWT: ", token);
       return token;
     },
 
@@ -82,16 +91,30 @@ export const {
       // });
 
       // session custom fields
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
+      if (session.user) {
+        if (token.sub) {
+          session.user.id = token.sub;
+        }
 
-      if (token.role && session.user) {
-        session.user.role = token.role;
-      }
+        if (token.role) {
+          session.user.role = token.role;
+        }
 
-      if (token.isTwoFactorEnabled && session.user) {
-        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
+        if (token.isTwoFactorEnabled) {
+          session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
+        }
+
+        if (token.name) {
+          session.user.name = token.name;
+        }
+
+        if (token.email) {
+          session.user.email = token.email;
+        }
+
+        if (token.isOAuth) {
+          session.user.isOAuth = token.isOAuth;
+        }
       }
 
       return session;

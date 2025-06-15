@@ -41,8 +41,8 @@ export const LoginForm = () => {
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "addyyy118@gmail.com",
-      password: "12345678",
-      // password: "Hello@18",
+      // password: "12345678",
+      password: "Hello@18",
     },
   });
 
@@ -69,10 +69,12 @@ export const LoginForm = () => {
           setShowTwoFactor(true);
         } else if (data?.success) {
           router.push(DEFAULT_LOGIN_REDIRECT);
+          window.location.reload();
         }
 
         if (data?.twoFactor && data?.success) {
           router.push(DEFAULT_LOGIN_REDIRECT);
+          window.location.reload();
         }
       } catch {
         setError("Something went wrong");
@@ -92,6 +94,7 @@ export const LoginForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
+            {/* 2fa inputs */}
             {showTwoFactor && (
               <FormField
                 control={form.control}
@@ -112,6 +115,8 @@ export const LoginForm = () => {
                 )}
               />
             )}
+
+            {/* normal login inputs */}
             {!showTwoFactor && (
               <>
                 <FormField
