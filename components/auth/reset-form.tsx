@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
@@ -18,12 +18,9 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "@/components/form-success";
-import { useRouter } from "next/navigation";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { reset } from "@/actions/reset";
 
 export const ResetForm = () => {
-  const router = useRouter();
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -35,6 +32,17 @@ export const ResetForm = () => {
       email: "addyyy118@gmail.com",
     },
   });
+
+    useEffect(() => {
+      if (error || success) {
+        const timer = setTimeout(() => {
+          setError(undefined);
+          setSuccess(undefined);
+        }, 3000);
+  
+        return () => clearTimeout(timer);
+      }
+    }, [error, success]);
 
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     setError("");

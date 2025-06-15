@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
@@ -22,10 +22,10 @@ import { login } from "@/actions/login";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import Link from "next/link";
+import { FaExclamation } from "react-icons/fa";
 
 export const LoginForm = () => {
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -35,6 +35,7 @@ export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [showTwoFactor, setShowTwoFactor] = useState<boolean>(false);
+  const [twoFactorMail, setTwoFactorMail] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -45,6 +46,17 @@ export const LoginForm = () => {
       password: "Hello@18",
     },
   });
+
+  // useEffect(() => {
+  //   if (error || success) {
+  //     const timer = setTimeout(() => {
+  //       setError(undefined);
+  //       setSuccess(undefined);
+  //     }, 3000);
+
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [error, success]);
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
@@ -66,15 +78,16 @@ export const LoginForm = () => {
         }
 
         if (data?.twoFactor) {
+          setTwoFactorMail(values.email);
           setShowTwoFactor(true);
         } else if (data?.success) {
           router.push(DEFAULT_LOGIN_REDIRECT);
-          window.location.reload();
+          // window.location.reload();
         }
 
         if (data?.twoFactor && data?.success) {
           router.push(DEFAULT_LOGIN_REDIRECT);
-          window.location.reload();
+          // window.location.reload();
         }
       } catch {
         setError("Something went wrong");
@@ -101,11 +114,18 @@ export const LoginForm = () => {
                 name="code"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Two Factor Code</FormLabel>
+                    <FormLabel className="leading-normal flex flex-col items-start">
+                      The two factor authentication code has been sent to{" "}
+                      {twoFactorMail}
+                      <div className="flex items-center justify-center gap-2 text-gray-400 text-xs">
+                        <FaExclamation size={12} />
+                        <p>The 2FA code sent will expire in 5 minutes</p>
+                      </div>
+                    </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="123456"
+                        placeholder="000000"
                         type="text"
                         disabled={isPending}
                       />

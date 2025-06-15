@@ -6,8 +6,10 @@ import { newVerification } from "@/actions/new-verification";
 import { FormSuccess } from "../form-success";
 import { FormError } from "../form-error";
 import Loading from "../loading";
+import { useRouter } from "next/navigation";
 
 export const NewVerificationForm = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const searchParams = useSearchParams();
@@ -22,11 +24,10 @@ export const NewVerificationForm = () => {
       const data = await newVerification(token);
 
       if (data?.error) {
-        setSuccess(undefined);
         setError(data.error);
       } else if (data?.success) {
-        setError(undefined);
         setSuccess(data.success);
+        router.push("/login");
       }
     } catch {
       setError("Something went wrong.");

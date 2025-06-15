@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
@@ -19,10 +19,8 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "@/components/form-success";
 import { register } from "@/actions/register";
-import { useRouter } from "next/navigation";
 
 export const RegiForm = () => {
-  const router = useRouter();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -34,6 +32,17 @@ export const RegiForm = () => {
       password: "Hello@18",
     },
   });
+
+    useEffect(() => {
+      if (error || success) {
+        const timer = setTimeout(() => {
+          setError(undefined);
+          setSuccess(undefined);
+        }, 3000);
+  
+        return () => clearTimeout(timer);
+      }
+    }, [error, success]);
 
   const onSubmit = (values: z.infer<typeof RegiSchema>) => {
     setError("");

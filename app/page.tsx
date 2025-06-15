@@ -18,9 +18,9 @@ export default function Home() {
             font.className
           )}
         >
-          Auth
+          {process.env.PROJECT_NAME}
         </h1>
-        <p>A simple authentication service</p>
+        <p className="text-gray-300">A simple authentication service</p>
         <div>
           <LoginButton>
             <Button variant="secondary" size="lg">

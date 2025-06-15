@@ -42,7 +42,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       verificationToken.token
     );
 
-    return { success: "Confirmation email sent!" };
+    return { success: `Confirmation email sent to ${verificationToken.email}` };
   }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email)
@@ -80,9 +80,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
           userId: existingUser.id,
         },
       });
-    } 
-    
-    else {
+    } else {
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
 
       await sendTwoFactorConf(twoFactorToken.email, twoFactorToken.token);

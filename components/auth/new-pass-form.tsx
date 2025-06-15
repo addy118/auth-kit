@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,6 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { reset } from "@/actions/reset";
 import { newPass } from "@/actions/new-pass";
 
 export const NewPassForm = () => {
@@ -34,16 +33,22 @@ export const NewPassForm = () => {
 
   const form = useForm<z.infer<typeof NewPassSchema>>({
     resolver: zodResolver(NewPassSchema),
-    defaultValues: {
-      password: "12345678",
-    },
   });
+
+    useEffect(() => {
+      if (error || success) {
+        const timer = setTimeout(() => {
+          setError(undefined);
+          setSuccess(undefined);
+        }, 3000);
+  
+        return () => clearTimeout(timer);
+      }
+    }, [error, success]);
 
   const onSubmit = (values: z.infer<typeof NewPassSchema>) => {
     setError("");
     setSuccess("");
-
-    console.log(values);
 
     startTransition(() => {
       newPass(values, token).then((data) => {

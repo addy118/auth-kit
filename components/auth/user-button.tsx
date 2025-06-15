@@ -18,7 +18,14 @@ export const UserButton = () => {
   const user = useCurrentUser();
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
+
+  const menuItems = [
+    { label: "Admin", icon: ShieldUser, path: "/admin" },
+    { label: "Settings", icon: Settings, path: "/settings" },
+    { label: "Server", icon: Server, path: "/server" },
+    { label: "Client", icon: Globe, path: "/client" },
+  ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -30,36 +37,26 @@ export const UserButton = () => {
         </Avatar>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-40" align="end">
-        <span className="cursor-pointer" onClick={() => router.push("/admin")}>
-          <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
-            <ShieldUser size={18} /> Admin
-          </DropdownMenuItem>
-        </span>
-
-        <span
-          className="cursor-pointer"
-          onClick={() => router.push("/settings")}
-        >
-          <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
-            <Settings size={18} /> Settings
-          </DropdownMenuItem>
-        </span>
-
-        <span className="cursor-pointer" onClick={() => router.push("/server")}>
-          <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
-            <Server size={18} /> Server
-          </DropdownMenuItem>
-        </span>
-
-        <span className="cursor-pointer" onClick={() => router.push("/client")}>
-          <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
-            <Globe size={18} /> Client
-          </DropdownMenuItem>
-        </span>
+      
+      <DropdownMenuContent className="w-40 rounded-xs" align="end">
+        {menuItems.map(({ label, icon: Icon, path }) => (
+          <span
+            key={path}
+            className="cursor-pointer"
+            onClick={() => router.push(path)}
+          >
+            <DropdownMenuItem
+              className={`flex items-center justify-start pl-4 gap-x-3 my-2 py-1 rounded-xs ${
+                pathname === path ? "bg-gray-300" : ""
+              }`}
+            >
+              <Icon size={18} /> {label}
+            </DropdownMenuItem>
+          </span>
+        ))}
 
         <LogoutButton>
-          <DropdownMenuItem className="flex items-center justify-center gap-x-2 my-2">
+          <DropdownMenuItem className="flex items-center justify-start gap-x-3 my-2 pl-4 py-1">
             <LogOut size={18} /> Sign Out
           </DropdownMenuItem>
         </LogoutButton>

@@ -18,6 +18,17 @@ export const ChangeEmailForm = () => {
   const token = searchParams.get("token");
   const user = useCurrentUser();
 
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError(undefined);
+        setSuccess(undefined);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
+
   const onSubmit = useCallback(async () => {
     if (!token) {
       setError("Missing token.");
@@ -29,13 +40,11 @@ export const ChangeEmailForm = () => {
       const data = await emailChange(token, user);
 
       if (data?.error) {
-        setSuccess(undefined);
         setError(data?.error);
       }
 
       if (data?.success) {
         await update();
-        setError(undefined);
         setSuccess(data?.success);
         router.push("/settings");
       }
