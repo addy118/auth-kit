@@ -3,6 +3,7 @@ import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import User from "./data/user";
+import TwoFactorConfirm from "./data/two-factor-conf";
 
 export const {
   // nested destructuring
@@ -39,7 +40,23 @@ export const {
         return false;
       }
 
+      console.log("from auth.ts: 43");
+
       // TODO: add 2fa check
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await TwoFactorConfirm.getByUserId(
+          existingUser.id
+        );
+
+        console.log(twoFactorConfirmation);
+
+        if (!twoFactorConfirmation) return false;
+
+        // delete two factor confirmation for next sign in
+        await db.twoFactorConfirmation.delete({
+          where: { id: twoFactorConfirmation.id },
+        });
+      }
 
       // allow signIn
       return true;

@@ -48,10 +48,6 @@ export const ResetForm = () => {
 
         setError(data?.error);
         setSuccess(data?.success);
-
-        if (data?.success) {
-          router.push(DEFAULT_LOGIN_REDIRECT);
-        }
       });
     });
   };

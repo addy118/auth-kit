@@ -28,3 +28,14 @@ export const sendPassResetEmail = async (email: string, token: string) => {
     `,
   });
 };
+
+export const sendTwoFactorConf = async (email: string, token: string) => {
+  await resend.emails.send({
+    from: "no-reply@adityakirti.tech",
+    to: email,
+    subject: "Two Factor Authentication Code",
+    html: `
+    <p>Your 2FA Code: ${token}</p>
+    `
+  })
+}
