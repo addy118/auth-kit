@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
-import * as z from "zod";
+import { useEffect, useState, useTransition } from "react";
+import type * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,16 +35,16 @@ export const NewPassForm = () => {
     resolver: zodResolver(NewPassSchema),
   });
 
-    useEffect(() => {
-      if (error || success) {
-        const timer = setTimeout(() => {
-          setError(undefined);
-          setSuccess(undefined);
-        }, 3000);
-  
-        return () => clearTimeout(timer);
-      }
-    }, [error, success]);
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError(undefined);
+        setSuccess(undefined);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
 
   const onSubmit = (values: z.infer<typeof NewPassSchema>) => {
     setError("");
@@ -66,38 +66,54 @@ export const NewPassForm = () => {
 
   return (
     <CardWrapper
-      headerLablel="Enter a new password"
+      headerLablel="Create new password"
       backButtonLabel="Back to login"
       backButtonHref="/login"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-5">
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
+                <FormItem className="space-y-2">
+                  <FormLabel className="text-[#ffffff] font-medium text-sm">
+                    New Password
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="********"
+                      placeholder="Create a strong password"
                       type="password"
                       disabled={isPending}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[#ef4444] text-xs" />
                 </FormItem>
               )}
             />
           </div>
 
-          <FormError message={error} />
-          <FormSuccess message={success} />
-          <Button type="submit" disabled={isPending} className="w-full">
-            Reset password
-          </Button>
+          <div className="space-y-4">
+            <FormError message={error} />
+            <FormSuccess message={success} />
+
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="w-full bg-[#ffffff] hover:bg-[#cccccc] text-[#000000] font-semibold transition-smooth focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isPending ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-[#000000]/30 border-t-[#000000] rounded-full animate-spin"></div>
+                  Updating password...
+                </div>
+              ) : (
+                "Update Password"
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
     </CardWrapper>

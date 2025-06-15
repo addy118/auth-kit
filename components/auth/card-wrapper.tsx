@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Header } from "./header";
 import { Social } from "./social";
@@ -22,19 +22,21 @@ export const CardWrapper = ({
   showSocial,
 }: CardWrapperProps) => {
   return (
-    <Card className="w-[400px] shadow-md">
-      <CardHeader>
-        <Header label={headerLablel} />
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-      {showSocial && (
-        <CardFooter>
-          <Social />
+    <div className="w-full max-w-md mx-auto">
+      <Card className="w-full bg-[#111111]/80 glass border border-[#333333]/50 transition-smooth hover:border-[#444444]/50">
+        <CardHeader className="pb-8">
+          <Header label={headerLablel} />
+        </CardHeader>
+        <CardContent className="px-8 pb-6">{children}</CardContent>
+        {showSocial && (
+          <CardFooter className="px-8 pb-6">
+            <Social />
+          </CardFooter>
+        )}
+        <CardFooter className="px-8 pb-8 pt-0">
+          <BackButton label={backButtonLabel} href={backButtonHref} />
         </CardFooter>
-      )}
-      <CardFooter>
-        <BackButton label={backButtonLabel} href={backButtonHref} />
-      </CardFooter>
-    </Card>
+      </Card>
+    </div>
   );
 };

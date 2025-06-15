@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +9,13 @@ import { FaUser } from "react-icons/fa";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "./logout-button";
-import { Globe, LogOut, Server, Settings, ShieldUser } from "lucide-react";
+import {
+  Globe,
+  LogOut,
+  Server,
+  Settings,
+  ShieldIcon as ShieldUser,
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 export const UserButton = () => {
@@ -28,17 +32,27 @@ export const UserButton = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Avatar>
-          <AvatarImage src={user?.image || ""} />
-          <AvatarFallback className="bg-black">
-            <FaUser color="#fff" />
+      <DropdownMenuTrigger className="focus-ring rounded-full">
+        <Avatar className="w-10 h-10 border-2 border-[#333333] hover:border-[#555555] transition-smooth">
+          <AvatarImage src={user?.image || ""} className="object-cover" />
+          <AvatarFallback className="bg-[#222222] border border-[#333333]">
+            <FaUser className="text-[#ffffff] w-4 h-4" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
 
-      
-      <DropdownMenuContent className="w-40 rounded-xs" align="end">
+      <DropdownMenuContent
+        className="w-48 bg-[#111111]/95 glass border border-[#333333]/50 rounded-sm p-2"
+        align="end"
+        sideOffset={8}
+      >
+        <div className="px-3 py-2 border-b border-[#333333]/50 mb-2">
+          <p className="text-[#ffffff] font-medium text-sm truncate">
+            {user?.name || "User"}
+          </p>
+          <p className="text-[#888888] text-xs truncate">{user?.email}</p>
+        </div>
+
         {menuItems.map(({ label, icon: Icon, path }) => (
           <span
             key={path}
@@ -46,20 +60,26 @@ export const UserButton = () => {
             onClick={() => router.push(path)}
           >
             <DropdownMenuItem
-              className={`flex items-center justify-start pl-4 gap-x-3 my-2 py-1 rounded-xs ${
-                pathname === path ? "bg-gray-300" : ""
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-smooth cursor-pointer focus:outline-none ${
+                pathname === path
+                  ? "bg-[#333333] text-[#ffffff]"
+                  : "text-[#cccccc] hover:bg-[#222222] hover:text-[#ffffff]"
               }`}
             >
-              <Icon size={18} /> {label}
+              <Icon size={16} />
+              <span className="text-sm font-medium">{label}</span>
             </DropdownMenuItem>
           </span>
         ))}
 
-        <LogoutButton>
-          <DropdownMenuItem className="flex items-center justify-start gap-x-3 my-2 pl-4 py-1">
-            <LogOut size={18} /> Sign Out
-          </DropdownMenuItem>
-        </LogoutButton>
+        <div className="border-t border-[#333333]/50 mt-2 pt-2">
+          <LogoutButton>
+            <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#cccccc] hover:bg-[#222222] hover:text-[#ffffff] transition-smooth cursor-pointer focus:outline-none">
+              <LogOut size={16} />
+              <span className="text-sm font-medium">Sign Out</span>
+            </DropdownMenuItem>
+          </LogoutButton>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

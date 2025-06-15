@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
-import * as z from "zod";
+import { useState, useTransition } from "react";
+import type * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,21 +42,9 @@ export const LoginForm = () => {
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "addyyy118@gmail.com",
-      // password: "12345678",
       password: "Hello@18",
     },
   });
-
-  // useEffect(() => {
-  //   if (error || success) {
-  //     const timer = setTimeout(() => {
-  //       setError(undefined);
-  //       setSuccess(undefined);
-  //     }, 3000);
-
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [error, success]);
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
@@ -82,12 +70,10 @@ export const LoginForm = () => {
           setShowTwoFactor(true);
         } else if (data?.success) {
           router.push(DEFAULT_LOGIN_REDIRECT);
-          // window.location.reload();
         }
 
         if (data?.twoFactor && data?.success) {
           router.push(DEFAULT_LOGIN_REDIRECT);
-          // window.location.reload();
         }
       } catch {
         setError("Something went wrong");
@@ -106,19 +92,23 @@ export const LoginForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-5">
             {/* 2fa inputs */}
             {showTwoFactor && (
               <FormField
                 control={form.control}
                 name="code"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="leading-normal flex flex-col items-start">
-                      The two factor authentication code has been sent to{" "}
-                      {twoFactorMail}
-                      <div className="flex items-center justify-center gap-2 text-gray-400 text-xs">
-                        <FaExclamation size={12} />
+                  <FormItem className="space-y-3">
+                    <FormLabel className="text-[#ffffff] font-medium text-sm leading-relaxed flex flex-col items-start space-y-2">
+                      <span>
+                        The two factor authentication code has been sent to{" "}
+                        <span className="text-[#cccccc] font-semibold">
+                          {twoFactorMail}
+                        </span>
+                      </span>
+                      <div className="flex items-center gap-2 text-[#888888] text-xs">
+                        <FaExclamation size={10} />
                         <p>The 2FA code sent will expire in 5 minutes</p>
                       </div>
                     </FormLabel>
@@ -128,9 +118,10 @@ export const LoginForm = () => {
                         placeholder="000000"
                         type="text"
                         disabled={isPending}
+                        className="text-center text-lg tracking-widest"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-[#ef4444] text-xs" />
                   </FormItem>
                 )}
               />
@@ -143,8 +134,10 @@ export const LoginForm = () => {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
+                    <FormItem className="space-y-2">
+                      <FormLabel className="text-[#ffffff] font-medium text-sm">
+                        Email Address
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -153,7 +146,7 @@ export const LoginForm = () => {
                           disabled={isPending}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-[#ef4444] text-xs" />
                     </FormItem>
                   )}
                 />
@@ -162,25 +155,34 @@ export const LoginForm = () => {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
+                    <FormItem className="space-y-2">
+                      <FormLabel className="text-[#ffffff] font-medium text-sm">
+                        Password
+                      </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="*******"
+                          placeholder="Enter your password"
                           type="password"
                           disabled={isPending}
                         />
                       </FormControl>
-                      <Button
-                        variant="link"
-                        size="sm"
-                        asChild
-                        className="px-0 font-normal"
-                      >
-                        <Link href="/reset">Forgot Password?</Link>
-                      </Button>
-                      <FormMessage />
+                      <div className="flex justify-end">
+                        <Button
+                          variant="link"
+                          size="sm"
+                          asChild
+                          className="px-0 font-normal text-[#888888] hover:text-[#ffffff] transition-smooth h-auto text-xs"
+                        >
+                          <Link
+                            href="/reset"
+                            className="focus-ring rounded px-1 py-0.5"
+                          >
+                            Forgot Password?
+                          </Link>
+                        </Button>
+                      </div>
+                      <FormMessage className="text-[#ef4444] text-xs" />
                     </FormItem>
                   )}
                 />
@@ -188,11 +190,27 @@ export const LoginForm = () => {
             )}
           </div>
 
-          <FormError message={error || urlError} />
-          <FormSuccess message={success} />
-          <Button type="submit" disabled={isPending} className="w-full">
-            {!showTwoFactor ? "Login" : "Confirm"}
-          </Button>
+          <div className="space-y-4">
+            <FormError message={error || urlError} />
+            <FormSuccess message={success} />
+
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="w-full bg-[#ffffff] hover:bg-[#cccccc] text-[#000000] font-semibold transition-smooth focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isPending ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-[#000000]/30 border-t-[#000000] rounded-full animate-spin"></div>
+                  {!showTwoFactor ? "Signing in..." : "Confirming..."}
+                </div>
+              ) : !showTwoFactor ? (
+                "Sign In"
+              ) : (
+                "Confirm Code"
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
     </CardWrapper>
