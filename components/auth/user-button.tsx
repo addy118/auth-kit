@@ -32,17 +32,17 @@ export const UserButton = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="focus-ring rounded-full">
+      <DropdownMenuTrigger>
         <Avatar className="w-10 h-10 border-2 border-[#333333] hover:border-[#555555] transition-smooth">
           <AvatarImage src={user?.image || ""} className="object-cover" />
-          <AvatarFallback className="bg-[#222222] border border-[#333333]">
+          <AvatarFallback className="bg-[#222222] ">
             <FaUser className="text-[#ffffff] w-4 h-4" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="w-48 bg-[#111111]/95 glass border border-[#333333]/50 rounded-sm p-2"
+        className="w-48 bg-[#101010] border border-[#333333]/50 rounded-sm p-2"
         align="end"
         sideOffset={8}
       >
@@ -67,7 +67,7 @@ export const UserButton = () => {
               }`}
             >
               <Icon size={16} />
-              <span className="text-sm font-medium">{label}</span>
+              <span className="text-xs font-medium">{label}</span>
             </DropdownMenuItem>
           </span>
         ))}
@@ -76,7 +76,7 @@ export const UserButton = () => {
           <LogoutButton>
             <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 rounded-lg text-[#cccccc] hover:bg-[#222222] hover:text-[#ffffff] transition-smooth cursor-pointer focus:outline-none">
               <LogOut size={16} />
-              <span className="text-sm font-medium">Sign Out</span>
+              <span className="text-xs font-medium">Sign Out</span>
             </DropdownMenuItem>
           </LogoutButton>
         </div>

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -155,3 +154,14 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+button:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+
+/* .focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-black;
+} */

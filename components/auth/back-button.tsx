@@ -16,7 +16,10 @@ export const BackButton = ({ href, label }: BackButtonProps) => {
       size="sm"
       asChild
     >
-      <Link href={href} className="focus-ring rounded-md px-2 py-1">
+      <Link
+        href={href}
+        className="focus-ring rounded-md px-2 py-1"
+      >
         {label}
       </Link>
     </Button>

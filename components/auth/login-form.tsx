@@ -91,16 +91,16 @@ export const LoginForm = () => {
       showSocial={!showTwoFactor}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-5">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-3">
             {/* 2fa inputs */}
             {showTwoFactor && (
               <FormField
                 control={form.control}
                 name="code"
                 render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel className="text-[#ffffff] font-medium text-sm leading-relaxed flex flex-col items-start space-y-2">
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-[#ffffff] font-medium text-xs leading-relaxed flex flex-col items-start space-y-1.5">
                       <span>
                         The two factor authentication code has been sent to{" "}
                         <span className="text-[#cccccc] font-semibold">
@@ -134,8 +134,8 @@ export const LoginForm = () => {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-[#ffffff] font-medium text-sm">
+                    <FormItem>
+                      <FormLabel className="text-[#ffffff] font-medium text-xs">
                         Email Address
                       </FormLabel>
                       <FormControl>
@@ -155,8 +155,8 @@ export const LoginForm = () => {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-[#ffffff] font-medium text-sm">
+                    <FormItem>
+                      <FormLabel className="text-[#ffffff] font-medium text-xs">
                         Password
                       </FormLabel>
                       <FormControl>
@@ -190,14 +190,14 @@ export const LoginForm = () => {
             )}
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <FormError message={error || urlError} />
             <FormSuccess message={success} />
 
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full bg-[#ffffff] hover:bg-[#cccccc] text-[#000000] font-semibold transition-smooth focus-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#ffffff] hover:bg-[#cccccc] text-[#000000] font-semibold transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending ? (
                 <div className="flex items-center gap-2">

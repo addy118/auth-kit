@@ -69,8 +69,8 @@ const Settings = () => {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
-      <Card className="w-full max-w-[600px] bg-[#111111]/80 glass border border-[#333333]/50 transition-smooth">
+    <div className="flex w-full items-center justify-center">
+      <Card className="w-[60vw] max-w-none min-w-[520px] bg-[#111111]/80 glass border border-[#333333]/50 transition-smooth">
         <CardHeader>
           <p className="text-2xl font-semibold text-center text-[#ffffff]">
             Profile Settings
@@ -162,8 +162,8 @@ const Settings = () => {
                       control={form.control}
                       name="isTwoFactorEnabled"
                       render={({ field }) => (
-                        <FormItem className="flex items-center justify-between rounded-lg border border-[#333333] bg-[#1a1a1a]/50 p-3">
-                          <div className="space-y-2">
+                        <FormItem className="flex items-start justify-between rounded-sm border border-[#333333] bg-[#1a1a1a]/50 p-4 gap-4">
+                          <div className="space-y-2 flex-1 min-w-0">
                             <FormLabel>Two Factor Authentication</FormLabel>
                             <FormDescription>
                               Enable two factor authentication for your account
@@ -186,7 +186,9 @@ const Settings = () => {
 
               <FormError message={error} />
               <FormSuccess message={success} />
-              <Button type="submit">Save</Button>
+              <Button type="submit" className="w-full">
+                Save
+              </Button>
             </form>
           </Form>
         </CardContent>

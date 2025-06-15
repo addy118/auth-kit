@@ -5,7 +5,7 @@ import type * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegiSchema } from "@/schemas";
+import { ResetSchema } from "@/schemas";
 import {
   Form,
   FormControl,
@@ -18,18 +18,17 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "@/components/form-success";
-import { register } from "@/actions/register";
+import { reset } from "@/actions/reset";
 
-export const RegiForm = () => {
+export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const form = useForm<z.infer<typeof RegiSchema>>({
-    resolver: zodResolver(RegiSchema),
+
+  const form = useForm<z.infer<typeof ResetSchema>>({
+    resolver: zodResolver(ResetSchema),
     defaultValues: {
-      name: "Aditya Kirti",
       email: "addyyy118@gmail.com",
-      password: "Hello@18",
     },
   });
 
@@ -44,55 +43,37 @@ export const RegiForm = () => {
     }
   }, [error, success]);
 
-  const onSubmit = (values: z.infer<typeof RegiSchema>) => {
+  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
     setError("");
     setSuccess("");
 
+    console.log(values);
+
     startTransition(() => {
-      register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+      reset(values).then((data) => {
+        if (!data) return;
+
+        setError(data?.error);
+        setSuccess(data?.success);
       });
     });
   };
 
   return (
     <CardWrapper
-      headerLablel="Create your account"
-      backButtonLabel="Already have an account?"
+      headerLablel="Reset your password"
+      backButtonLabel="Back to login"
       backButtonHref="/login"
-      showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-5">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-[#ffffff] font-medium text-sm">
-                    Full Name
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="John Doe"
-                      type="text"
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#ef4444] text-xs" />
-                </FormItem>
-              )}
-            />
-
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-3">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-[#ffffff] font-medium text-sm">
+                <FormItem>
+                  <FormLabel className="text-[#ffffff] font-medium text-xs">
                     Email Address
                   </FormLabel>
                   <FormControl>
@@ -107,30 +88,9 @@ export const RegiForm = () => {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-[#ffffff] font-medium text-sm">
-                    Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Create a strong password"
-                      type="password"
-                      disabled={isPending}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-[#ef4444] text-xs" />
-                </FormItem>
-              )}
-            />
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <FormError message={error} />
             <FormSuccess message={success} />
 
@@ -142,10 +102,10 @@ export const RegiForm = () => {
               {isPending ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-[#000000]/30 border-t-[#000000] rounded-full animate-spin"></div>
-                  Creating account...
+                  Sending email...
                 </div>
               ) : (
-                "Create Account"
+                "Send Reset Email"
               )}
             </Button>
           </div>

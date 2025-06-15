@@ -71,14 +71,14 @@ export const NewPassForm = () => {
       backButtonHref="/login"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-5">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-3">
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="space-y-2">
-                  <FormLabel className="text-[#ffffff] font-medium text-sm">
+                <FormItem>
+                  <FormLabel className="text-[#ffffff] font-medium text-xs">
                     New Password
                   </FormLabel>
                   <FormControl>
@@ -95,7 +95,7 @@ export const NewPassForm = () => {
             />
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <FormError message={error} />
             <FormSuccess message={success} />
 

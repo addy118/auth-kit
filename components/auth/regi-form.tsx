@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
-import * as z from "zod";
+import { useEffect, useState, useTransition } from "react";
+import type * as z from "zod";
 import { CardWrapper } from "./card-wrapper";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,16 +33,16 @@ export const RegiForm = () => {
     },
   });
 
-    useEffect(() => {
-      if (error || success) {
-        const timer = setTimeout(() => {
-          setError(undefined);
-          setSuccess(undefined);
-        }, 3000);
-  
-        return () => clearTimeout(timer);
-      }
-    }, [error, success]);
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError(undefined);
+        setSuccess(undefined);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
 
   const onSubmit = (values: z.infer<typeof RegiSchema>) => {
     setError("");
@@ -58,20 +58,22 @@ export const RegiForm = () => {
 
   return (
     <CardWrapper
-      headerLablel="Create an account!"
+      headerLablel="Create your account"
       backButtonLabel="Already have an account?"
       backButtonHref="/login"
       showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-3">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel className="text-[#ffffff] font-medium text-xs">
+                    Full Name
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -80,7 +82,7 @@ export const RegiForm = () => {
                       disabled={isPending}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[#ef4444] text-xs" />
                 </FormItem>
               )}
             />
@@ -90,7 +92,9 @@ export const RegiForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="text-[#ffffff] font-medium text-xs">
+                    Email Address
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -99,7 +103,7 @@ export const RegiForm = () => {
                       disabled={isPending}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[#ef4444] text-xs" />
                 </FormItem>
               )}
             />
@@ -109,26 +113,42 @@ export const RegiForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-[#ffffff] font-medium text-xs">
+                    Password
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="*******"
+                      placeholder="Create a strong password"
                       type="password"
                       disabled={isPending}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[#ef4444] text-xs" />
                 </FormItem>
               )}
             />
           </div>
 
-          <FormError message={error} />
-          <FormSuccess message={success} />
-          <Button type="submit" disabled={isPending} className="w-full">
-            Create an account
-          </Button>
+          <div className="space-y-3">
+            <FormError message={error} />
+            <FormSuccess message={success} />
+
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="w-full bg-[#ffffff] hover:bg-[#cccccc] text-[#000000] font-semibold transition-smooth focus-ring disabled:opacity-50 mt-2 disabled:cursor-not-allowed"
+            >
+              {isPending ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-[#000000]/30 border-t-[#000000] rounded-full animate-spin"></div>
+                  Creating account...
+                </div>
+              ) : (
+                "Create Account"
+              )}
+            </Button>
+          </div>
         </form>
       </Form>
     </CardWrapper>
