@@ -41,8 +41,6 @@ export const {
         return false;
       }
 
-      console.log("from auth.ts: 43");
-
       // add 2fa check
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await TwoFactorConfirm.getByUserId(
