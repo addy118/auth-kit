@@ -44,9 +44,9 @@ export const NewVerificationForm = () => {
       backButtonLabel="Back to login"
     >
       <div className="flex items-center w-full justify-center">
-        {<Loading action="" item="" size={10} />}
-        {/* <FormSuccess message={success} />
-        <FormError message={error} /> */}
+        {!success && !error && <Loading action="" item="" size={10} />}
+        <FormSuccess message={success} />
+        <FormError message={error} />
       </div>
     </CardWrapper>
   );
