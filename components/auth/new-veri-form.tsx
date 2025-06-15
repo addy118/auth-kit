@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { newVerification } from "@/actions/new-verification";
 import { FormSuccess } from "../form-success";
 import { FormError } from "../form-error";
+import Loading from "../loading";
 
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>();
@@ -43,13 +44,9 @@ export const NewVerificationForm = () => {
       backButtonLabel="Back to login"
     >
       <div className="flex items-center w-full justify-center">
-        {!success && !error && (
-          <div className="flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-          </div>
-        )}
-        <FormSuccess message={success} />
-        <FormError message={error} />
+        {<Loading action="" item="" size={10} />}
+        {/* <FormSuccess message={success} />
+        <FormError message={error} /> */}
       </div>
     </CardWrapper>
   );
