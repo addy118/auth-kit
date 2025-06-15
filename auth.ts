@@ -68,22 +68,30 @@ export const {
       const existingUser = await User.getById(token.sub);
       if (!existingUser) return token;
 
+      // token custom fields
       token.role = existingUser.role;
+      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+
       return token;
     },
 
     async session({ token, session }) {
-      console.log({
-        sessionToken: token,
-        session,
-      });
+      // console.log({
+      //   sessionToken: token,
+      //   session,
+      // });
 
+      // session custom fields
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
 
       if (token.role && session.user) {
         session.user.role = token.role;
+      }
+
+      if (token.isTwoFactorEnabled && session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
       }
 
       return session;
