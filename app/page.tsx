@@ -18,7 +18,7 @@ export default function Home() {
             font.className
           )}
         >
-          {process.env.PROJECT_NAME}
+          Auth Kit
         </h1>
         <p className="text-gray-300">A simple authentication service</p>
         <div>
