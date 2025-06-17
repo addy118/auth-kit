@@ -18,6 +18,7 @@ export default {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     Credentials({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async authorize(credentials, request) {
         const validatedFields = LoginSchema.safeParse(credentials);
 
