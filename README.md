@@ -1,4 +1,4 @@
-# Auth Starter Template
+# [Auth Starter Template](https://github.com/addy118/auth-kit)
 
 A modern authentication starter template for Next.js apps. Get up and running with secure, production-ready auth in **under 5 minutes**.
 
