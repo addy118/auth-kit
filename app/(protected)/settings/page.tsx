@@ -31,6 +31,8 @@ const Settings = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
 
+  console.log("Client-side user from settings: ", user);
+
   useEffect(() => {
     if (error || success) {
       const timer = setTimeout(() => {

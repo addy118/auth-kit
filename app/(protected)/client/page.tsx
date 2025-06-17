@@ -6,6 +6,8 @@ import React from "react";
 
 const Client = () => {
   const user = useCurrentUser();
+  
+  console.log("User from client: ", user);
   return (
     <div>
       <UserInfo label="Client Page" user={user} />
