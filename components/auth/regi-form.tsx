@@ -27,9 +27,9 @@ export const RegiForm = () => {
   const form = useForm<z.infer<typeof RegiSchema>>({
     resolver: zodResolver(RegiSchema),
     defaultValues: {
-      name: "Aditya Kirti",
-      email: "addyyy118@gmail.com",
-      password: "Hello@18",
+      name: "",
+      email: "",
+      password: "",
     },
   });
 
